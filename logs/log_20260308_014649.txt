@@ -1,0 +1,84 @@
+Iniciando Pipeline de IA - 2026-03-08 01:46:49.525086
+Archivo de log generado en: C:\Users\henry\OneDrive\Documentos\Maestría\2026\Plan de transformacion digital II\IA\eps_ai\logs\log_20260308_014649.txt
+
+Extrayendo datos y preprocesando tensores...
+Extrayendo datos desde PostgreSQL...
+Dimensión de Entrenamiento: (76800, 22)
+Dimensión de Prueba: (19200, 22)
+Escalador guardado en /models.
+
+======================================================
+ EVALUANDO MODELO: XGBoost
+======================================================
+[CV] F1-Score Promedio (5-Folds): 1.0000 (+/- 0.0000)
+[MÉTRICAS] AUC-ROC: 1.0000 | AUC-PR: 1.0000
+[MATRIZ] Verdaderos Negativos (OK): 18642 | Falsos Positivos: 0
+[MATRIZ] Falsos Negativos (Fraude Oculto): 0 | Verdaderos Positivos: 558
+
+               precision    recall  f1-score   support
+
+   Normal (0)       1.00      1.00      1.00     18642
+Irregular (1)       1.00      1.00      1.00       558
+
+     accuracy                           1.00     19200
+    macro avg       1.00      1.00      1.00     19200
+ weighted avg       1.00      1.00      1.00     19200
+
+
+======================================================
+ EVALUANDO MODELO: Random Forest
+======================================================
+[CV] F1-Score Promedio (5-Folds): 1.0000 (+/- 0.0000)
+[MÉTRICAS] AUC-ROC: 1.0000 | AUC-PR: 1.0000
+[MATRIZ] Verdaderos Negativos (OK): 18642 | Falsos Positivos: 0
+[MATRIZ] Falsos Negativos (Fraude Oculto): 0 | Verdaderos Positivos: 558
+
+               precision    recall  f1-score   support
+
+   Normal (0)       1.00      1.00      1.00     18642
+Irregular (1)       1.00      1.00      1.00       558
+
+     accuracy                           1.00     19200
+    macro avg       1.00      1.00      1.00     19200
+ weighted avg       1.00      1.00      1.00     19200
+
+
+======================================================
+ EVALUANDO MODELO: SVM (Kernel RBF)
+======================================================
+[CV] F1-Score Promedio (5-Folds): 1.0000 (+/- 0.0000)
+[MÉTRICAS] AUC-ROC: 1.0000 | AUC-PR: 1.0000
+[MATRIZ] Verdaderos Negativos (OK): 18641 | Falsos Positivos: 1
+[MATRIZ] Falsos Negativos (Fraude Oculto): 0 | Verdaderos Positivos: 558
+
+               precision    recall  f1-score   support
+
+   Normal (0)       1.00      1.00      1.00     18642
+Irregular (1)       1.00      1.00      1.00       558
+
+     accuracy                           1.00     19200
+    macro avg       1.00      1.00      1.00     19200
+ weighted avg       1.00      1.00      1.00     19200
+
+
+======================================================
+ EVALUANDO MODELO: Modelo Híbrido (Soft Voting)
+======================================================
+[CV] F1-Score Promedio (5-Folds): 1.0000 (+/- 0.0000)
+[MÉTRICAS] AUC-ROC: 1.0000 | AUC-PR: 1.0000
+[MATRIZ] Verdaderos Negativos (OK): 18642 | Falsos Positivos: 0
+[MATRIZ] Falsos Negativos (Fraude Oculto): 0 | Verdaderos Positivos: 558
+
+               precision    recall  f1-score   support
+
+   Normal (0)       1.00      1.00      1.00     18642
+Irregular (1)       1.00      1.00      1.00       558
+
+     accuracy                           1.00     19200
+    macro avg       1.00      1.00      1.00     19200
+ weighted avg       1.00      1.00      1.00     19200
+
+
+[SISTEMA] Arquitectura finalizada. Modelo Híbrido empaquetado en 'C:\Users\henry\OneDrive\Documentos\Maestría\2026\Plan de transformacion digital II\IA\eps_ai\models\hybrid_fraud_model.pkl'.
+
+Proceso terminado. Log cerrado en: C:\Users\henry\OneDrive\Documentos\Maestría\2026\Plan de transformacion digital II\IA\eps_ai\logs\log_20260308_014649.txt

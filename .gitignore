@@ -1,0 +1,14 @@
+venv
+.vs
+*.pyc
+__pycache__
+*.pyo
+*.pyd
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.env
