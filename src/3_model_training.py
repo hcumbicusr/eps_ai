@@ -22,7 +22,7 @@ os.makedirs(LOGS_DIR, exist_ok=True)
 
 # Configurar el archivo de log con fecha y hora
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-log_filename = os.path.join(LOGS_DIR, f"log_{timestamp}.txt")
+log_filename = os.path.join(LOGS_DIR, f"log_training_{timestamp}.txt")
 
 class Logger(object):
     """Clase para duplicar la salida de consola en un archivo de texto."""
