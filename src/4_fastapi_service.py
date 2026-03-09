@@ -1,59 +1,34 @@
-import os
-import sys
 import time
 import joblib
-import warnings
 import numpy as np
 from datetime import datetime
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
+from src.config import settings
+from src.utils.logger_setup import setup_logger
+# Se activa el log automáticamente
+setup_logger("fastapi_service")
+
+app = FastAPI(
+    title="Servicio IA - EPS Detección de Patrones Irregulares", 
+    version="1.0.0",
+    description="API de inferencia para detección de irregularidades en consumos de agua"
+)
 
 # =====================================================================
-# CONFIGURACIÓN DE RUTAS Y LOGGING REAL-TIME
+# CARGA DE ARTEFACTOS CENTRALIZADA
 # =====================================================================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(BASE_DIR)
-
-LOGS_DIR = os.path.join(PROJECT_ROOT, "logs")
-os.makedirs(LOGS_DIR, exist_ok=True)
-
-timestamp = datetime.now().strftime("%Y%m%d")
-log_filename = os.path.join(LOGS_DIR, f"log_fastapi_{timestamp}.log")
-
-class RealTimeLogger:
-    def __init__(self, filename):
-        self.terminal = sys.stdout
-        self.log = open(filename, "a", encoding="utf-8")
-
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)
-        self.log.flush() # <--- Crucial para escritura en tiempo real
-
-    def flush(self):
-        self.terminal.flush()
-        self.log.flush()
-
-sys.stdout = RealTimeLogger(log_filename)
-warnings.filterwarnings('ignore')
-
-# =====================================================================
-# INICIALIZACIÓN Y CARGA DE MODELOS
-# =====================================================================
-app = FastAPI(title="Servicio IA - EPS Detección de Fraude", version="1.0.0")
-
-# Rutas absolutas para evitar fallos de carga
-SCALER_PATH = os.path.join(PROJECT_ROOT, "models", "standard_scaler.pkl")
-MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "hybrid_fraud_model.pkl")
-
-print(f"[{datetime.now()}] [SISTEMA] Cargando artefactos desde: {PROJECT_ROOT}")
+print(f"[SISTEMA] Cargando artefactos desde: {settings.PROJECT_ROOT}")
 
 try:
-    scaler = joblib.load(SCALER_PATH)
-    model = joblib.load(MODEL_PATH)
-    print(f"[{datetime.now()}] [ÉXITO] Modelos en RAM. API lista.")
+    # Usamos las rutas ya validadas en settings
+    scaler = joblib.load(settings.SCALER_PATH)
+    model = joblib.load(settings.MODEL_PATH)
+    print(f"[ÉXITO] Modelos en RAM. API lista para inferencia.")
 except Exception as e:
-    print(f"[{datetime.now()}] [ERROR CRÍTICO] Fallo al cargar .pkl: {e}")
+    # Este error ahora también se escribirá en el archivo .log
+    print(f"[ERROR CRÍTICO] Fallo al cargar artefactos .pkl: {e}")
+    # En producción, podrías querer detener el proceso aquí
 
 # =====================================================================
 # MIDDLEWARE PARA LOGS DE PETICIONES
@@ -115,7 +90,7 @@ async def evaluar_lectura(lectura: LecturaMedidor):
 
         resultado = {
             "estado_evaluacion": estado,
-            "riesgo_fraude_porcentaje": riesgo_fraude_pct,
+            "riesgo_irregularidad_porcentaje": riesgo_fraude_pct,
             "codigo_prediccion": int(prediccion_clase),
             "accion_sugerida": accion
         }

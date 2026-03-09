@@ -1,68 +1,25 @@
 import os
 import sys
-import time
 import pika
 import json
 import joblib
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
-import warnings
 from datetime import datetime
-
-# =====================================================================
-# CONFIGURACIÓN DE RUTAS Y LOGGING REAL-TIME
-# =====================================================================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(BASE_DIR)
-
-LOGS_DIR = os.path.join(PROJECT_ROOT, "logs")
-os.makedirs(LOGS_DIR, exist_ok=True)
-
-# Log por día para evitar archivos gigantescos
-timestamp_file = datetime.now().strftime("%Y%m%d")
-log_filename = os.path.join(LOGS_DIR, f"worker_ia_{timestamp_file}.log")
-
-class RealTimeLogger:
-    def __init__(self, filename):
-        self.terminal = sys.stdout
-        self.log = open(filename, "a", encoding="utf-8")
-
-    def write(self, message):
-        # Agregamos timestamp a cada línea que no sea un salto de línea vacío
-        if message.strip():
-            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            formatted_message = f"[{now}] {message}"
-        else:
-            formatted_message = message
-            
-        self.terminal.write(formatted_message)
-        self.log.write(formatted_message)
-        self.log.flush()
-
-    def flush(self):
-        self.terminal.flush()
-        self.log.flush()
-
-sys.stdout = RealTimeLogger(log_filename)
-warnings.filterwarnings('ignore')
-
-# ==============================================================================
-# CONFIGURACIÓN DE ARQUITECTURA
-# ==============================================================================
-RABBITMQ_HOST = 'localhost'
-QUEUE_NAME = 'medicion.registrada'
-DB_URI = 'postgresql://postgres:Admin123@localhost:5433/eps_db' 
+from src.config import settings
+from src.utils.logger_setup import setup_logger
+# Se activa el log automáticamente
+setup_logger("model_consumer")
 
 print(" [SISTEMA] Iniciando Motor de Inferencia IA...")
-
 try:
-    SCALER_PATH = os.path.join(PROJECT_ROOT, "models", "standard_scaler.pkl")
-    MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "hybrid_fraud_model.pkl")
+    SCALER_PATH = os.path.join(settings.PROJECT_ROOT, "models", "standard_scaler.pkl")
+    MODEL_PATH = os.path.join(settings.PROJECT_ROOT, "models", "hybrid_fraud_model.pkl")
     
     scaler = joblib.load(SCALER_PATH)
     model = joblib.load(MODEL_PATH)
-    engine = create_engine(DB_URI)
+    engine = create_engine(settings.get_db_uri())
     print(" [ÉXITO] Componentes cargados. Conexión a DB establecida.")
 except Exception as e:
     print(f" [ERROR CRÍTICO] No se pudo iniciar el worker: {e}")
@@ -129,12 +86,12 @@ def procesar_medicion(ch, method, properties, body):
 # ==============================================================================
 def iniciar_consumidor():
     # 1. Definir credenciales explícitas
-    credentials = pika.PlainCredentials('admin', 'Admin123')
+    credentials = pika.PlainCredentials(settings.RABBIT_USER, settings.RABBIT_PASS)
     
     # 2. Configurar parámetros con las credenciales
     params = pika.ConnectionParameters(
-        host='127.0.0.1', 
-        port=5672,
+        host=settings.RABBIT_HOST,
+        port=settings.RABBIT_PORT,
         credentials=credentials,
         heartbeat=600
     )
@@ -144,13 +101,13 @@ def iniciar_consumidor():
         connection = pika.BlockingConnection(params)
         channel = connection.channel()
         
-        channel.queue_declare(queue=QUEUE_NAME, durable=True)
+        channel.queue_declare(queue=settings.QUEUE_NAME_MEDICION_REGISTRADA, durable=True)
         channel.basic_qos(prefetch_count=1)
-        channel.basic_consume(queue=QUEUE_NAME, on_message_callback=procesar_medicion)
+        channel.basic_consume(queue=settings.QUEUE_NAME_MEDICION_REGISTRADA, on_message_callback=procesar_medicion)
         
         print("\n" + "="*65)
         print(" 🤖 WORKER DE IA EN TIEMPO REAL OPERATIVO")
-        print(f" 📡 Escuchando cola: '{QUEUE_NAME}'")
+        print(f" 📡 Escuchando cola: '{settings.QUEUE_NAME_MEDICION_REGISTRADA}'")
         print("="*65 + "\n")
         
         channel.start_consuming()

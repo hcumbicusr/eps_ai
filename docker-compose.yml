@@ -1,0 +1,96 @@
+networks:
+  eps_network:
+    driver: bridge
+
+volumes:
+  eps_postgres_data:
+
+services:
+  # BASE DE DATOS
+  postgres-eps-db:
+    image: postgres:16
+    container_name: postgres_eps_db
+    env_file: .env
+    environment:
+      # Postgres usa estas variables específicas para inicializarse
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - eps_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: always
+    networks:
+      - eps_network
+
+  # BROKER DE MENSAJERÍA
+  rabbitmq-eps-broker:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_eps_broker
+    env_file: .env
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - eps_network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # SERVICIO API IA
+  api-eps-ia:
+    build: .
+    container_name: api_eps_ai
+    env_file: .env
+    ports:
+      - "${IA_PORT}:8000"
+    command: ["uvicorn", "src.4_fastapi_service:app", "--host", "0.0.0.0", "--port", "8000"]
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - postgres-eps-db
+    healthcheck:
+      test: ["CMD", "python", "src/utils/check_health.py"]
+      interval: 30s
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      - eps_network
+
+  # TRABAJADOR DE IA (CONSUMIDOR)
+  consumer-eps-ia:
+    build: .
+    container_name: consumer_eps_ai
+    env_file: .env
+    command: ["python", "src/5_model_consumer.py"]
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      rabbitmq-eps-broker:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - eps_network
+
+  # API INGESTA (NESTJS)
+  api-eps-ingesta:
+    build:
+      context: ../api-eps-ingesta
+      dockerfile: Dockerfile
+    container_name: api_eps_ingesta
+    env_file: .env
+    ports:
+      - "${INGESTA_PORT}:${INGESTA_PORT}"
+    environment:
+      # Construcción dinámica de la URL de Rabbit para NestJS
+      - RABBITMQ_URL=amqp://${RABBIT_USER}:${RABBIT_PASS}@${RABBIT_HOST}:${RABBIT_PORT}
+    depends_on:
+      - rabbitmq-eps-broker
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - eps_network

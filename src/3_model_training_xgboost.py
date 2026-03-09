@@ -1,16 +1,11 @@
 import os
-import pandas as pd
-import numpy as np
 from xgboost import XGBClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 import joblib
-
-# 1. Obtiene la carpeta donde reside este script (...\eps_ai\src)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# 2. Sube un nivel a la raíz del proyecto (...\eps_ai)
-PROJECT_ROOT = os.path.dirname(BASE_DIR)
-
+from src.config import settings
+from src.utils.logger_setup import setup_logger
+# Se activa el log automáticamente
+setup_logger("model_training_xgboost")
 
 # Importamos el módulo de preprocesamiento construido en la etapa anterior
 # Si tu archivo tiene otro nombre, ajusta esta línea
@@ -65,7 +60,7 @@ def train_and_evaluate():
     print(f"[{tp}] Verdaderos Positivos (FRAUDE DETECTADO EXITOSAMENTE)")
     
     # 6. Serialización (Model Packaging) para el Microservicio FastAPI
-    ruta_modelo = os.path.join(PROJECT_ROOT, "models", "xgboost_fraud_model.pkl")
+    ruta_modelo = os.path.join(settings.PROJECT_ROOT, "models", "xgboost_fraud_model.pkl")
     joblib.dump(model, ruta_modelo)
     print(f"\n[ÉXITO] Modelo de IA entrenado y empaquetado como '{ruta_modelo}'.")
     print("======================================================")

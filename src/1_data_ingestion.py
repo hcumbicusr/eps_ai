@@ -1,15 +1,13 @@
 import os
 import pandas as pd
 from sqlalchemy import create_engine
-
-# 1. Obtiene la carpeta donde reside este script (...\eps_ai\src)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# 2. Sube un nivel a la raíz del proyecto (...\eps_ai)
-PROJECT_ROOT = os.path.dirname(BASE_DIR)
+from src.config import settings  # Importamos la configuración centralizada
+from src.utils.logger_setup import setup_logger
+# Se activa el log automáticamente
+setup_logger("data_ingestion")
 
 # 3. Une la ruta apuntando a la carpeta data en la raíz
-ruta_csv = os.path.join(PROJECT_ROOT, "data", "dataset_entrenamiento_eps_96000.csv")
+ruta_csv = settings.PATH_DATASET  # Esto ya incluye la ruta completa al dataset
 
 def load_data_to_postgres():
     print(f"Buscando archivo en: {ruta_csv}")
@@ -21,7 +19,7 @@ def load_data_to_postgres():
     
     # 2. Conexión a tu PostgreSQL en Docker (Modifica usuario:password@host:puerto/bd)
     # Ejemplo: postgresql://postgres:root@localhost:5432/eps_db
-    engine = create_engine('postgresql://postgres:Admin123@localhost:5433/eps_db')
+    engine = create_engine(settings.get_db_uri())
     
     # 3. Ingesta directa a la base de datos (crea la tabla automáticamente)
     df.to_sql('feature_store_lecturas', engine, if_exists='replace', index=False)

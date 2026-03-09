@@ -1,21 +1,17 @@
 import os
 import pandas as pd
-import numpy as np
 from sqlalchemy import create_engine
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import joblib
-
-# 1. Obtiene la carpeta donde reside este script (...\eps_ai\src)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# 2. Sube un nivel a la raíz del proyecto (...\eps_ai)
-PROJECT_ROOT = os.path.dirname(BASE_DIR)
-
+from src.config import settings
+from src.utils.logger_setup import setup_logger
+# Se activa el log automáticamente
+setup_logger("model_preprocessing")
 
 def extract_and_preprocess():
     print("Extrayendo datos desde PostgreSQL...")
-    engine = create_engine('postgresql://postgres:Admin123@localhost:5433/eps_db')
+    engine = create_engine(settings.get_db_uri())
     
     # Consulta SQL para extraer el dataset
     query = "SELECT * FROM feature_store_lecturas ORDER BY timestamp_medicion"
@@ -43,7 +39,7 @@ def extract_and_preprocess():
     X_test_scaled = scaler.transform(X_test)
     
     # 4. Serialización de objetos intermedios para la API (FastAPI)
-    joblib.dump(scaler, os.path.join(PROJECT_ROOT, "models", "standard_scaler.pkl"))
+    joblib.dump(scaler, os.path.join(settings.PROJECT_ROOT, "models", "standard_scaler.pkl"))
     print("Escalador guardado en /models.")
     
     return X_train_scaled, X_test_scaled, y_train, y_test, X.columns
