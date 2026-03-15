@@ -23,5 +23,6 @@ RUN pip install --no-cache-dir --no-build-isolation -r requirements.txt --defaul
 # 6. Copiar el Modelo de IA y el Código Fuente
 COPY models/ ./models/
 COPY src/ ./src/
+RUN mkdir data
 
 EXPOSE 8000
