@@ -148,11 +148,11 @@ def iniciar_consumidor():
         channel = connection.channel()
         
         # Declarar cola (Idempotente)
-        channel.queue_declare(queue=settings.QUEUE_NAME, durable=True)
+        channel.queue_declare(queue=settings.QUEUE_NAME_MEDICION_REGISTRADA, durable=True)
         channel.basic_qos(prefetch_count=1)
         
-        print(f" 📡 Escuchando eventos en: {settings.QUEUE_NAME}...")
-        channel.basic_consume(queue=settings.QUEUE_NAME, on_message_callback=callback_procesamiento)
+        print(f" 📡 Escuchando eventos en: {settings.QUEUE_NAME_MEDICION_REGISTRADA}...")
+        channel.basic_consume(queue=settings.QUEUE_NAME_MEDICION_REGISTRADA, on_message_callback=callback_procesamiento)
         channel.start_consuming()
         
     except pika.exceptions.AMQPConnectionError:

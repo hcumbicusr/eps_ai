@@ -1,0 +1,21 @@
+Modelo,Fold,F1,PR-AUC,VP,VN,FP,FN
+XGBoost,1,1.0,1.0,446,14914,0,0
+XGBoost,2,1.0,1.0,446,14914,0,0
+XGBoost,3,1.0,1.0,446,14914,0,0
+XGBoost,4,1.0,1.0,446,14914,0,0
+XGBoost,5,1.0,1.0,446,14914,0,0
+Random Forest,1,1.0,1.0,446,14914,0,0
+Random Forest,2,1.0,1.0,446,14914,0,0
+Random Forest,3,1.0,1.0,446,14914,0,0
+Random Forest,4,1.0,1.0,446,14914,0,0
+Random Forest,5,1.0,1.0,446,14914,0,0
+SVM (Kernel RBF),1,1.0,1.0,446,14914,0,0
+SVM (Kernel RBF),2,1.0,1.0,446,14914,0,0
+SVM (Kernel RBF),3,1.0,1.0,446,14914,0,0
+SVM (Kernel RBF),4,1.0,1.0,446,14914,0,0
+SVM (Kernel RBF),5,1.0,1.0,446,14914,0,0
+Modelo Hibrido (Soft Voting),1,1.0,1.0,446,14914,0,0
+Modelo Hibrido (Soft Voting),2,1.0,1.0,446,14914,0,0
+Modelo Hibrido (Soft Voting),3,1.0,1.0,446,14914,0,0
+Modelo Hibrido (Soft Voting),4,1.0,1.0,446,14914,0,0
+Modelo Hibrido (Soft Voting),5,1.0,1.0,446,14914,0,0
