@@ -1,0 +1,84 @@
+{
+  "dataset": {
+    "n": 96000,
+    "normal": 93148,
+    "irregular": 2852
+  },
+  "train": {
+    "n": 76800,
+    "normal": 74518,
+    "irregular": 2282
+  },
+  "test": {
+    "n": 19200,
+    "normal": 18630,
+    "irregular": 570
+  },
+  "folds": [
+    {
+      "fold": 1,
+      "fit": {
+        "n": 61440,
+        "normal": 59614,
+        "irregular": 1826
+      },
+      "validation": {
+        "n": 15360,
+        "normal": 14904,
+        "irregular": 456
+      }
+    },
+    {
+      "fold": 2,
+      "fit": {
+        "n": 61440,
+        "normal": 59614,
+        "irregular": 1826
+      },
+      "validation": {
+        "n": 15360,
+        "normal": 14904,
+        "irregular": 456
+      }
+    },
+    {
+      "fold": 3,
+      "fit": {
+        "n": 61440,
+        "normal": 59614,
+        "irregular": 1826
+      },
+      "validation": {
+        "n": 15360,
+        "normal": 14904,
+        "irregular": 456
+      }
+    },
+    {
+      "fold": 4,
+      "fit": {
+        "n": 61440,
+        "normal": 59615,
+        "irregular": 1825
+      },
+      "validation": {
+        "n": 15360,
+        "normal": 14903,
+        "irregular": 457
+      }
+    },
+    {
+      "fold": 5,
+      "fit": {
+        "n": 61440,
+        "normal": 59615,
+        "irregular": 1825
+      },
+      "validation": {
+        "n": 15360,
+        "normal": 14903,
+        "irregular": 457
+      }
+    }
+  ]
+}

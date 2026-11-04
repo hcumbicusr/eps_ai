@@ -1,0 +1,213 @@
+{
+  "observacion": 3,
+  "dataset": "SIDI-DATA-002",
+  "experimentos": [
+    "SIDI-RUN-003",
+    "SIDI-STRESS-001"
+  ],
+  "tipo_datos": "sinteticos",
+  "validacion_externa_real": "no_ejecutada",
+  "repo_base_commit": "d2cdc2dc120bbb9aef643ac9e6035f179170fc92",
+  "archivos": [
+    {
+      "path": "evidencias/observacion_3/README.md",
+      "bytes": 4602,
+      "sha256": "289c5a5eb2ec132027f9dfd892261240ad1aa9cd107953c68d90783a6df9be14"
+    },
+    {
+      "path": "evidencias/observacion_3/auditoria/informe_paso_1.md",
+      "bytes": 16931,
+      "sha256": "7b6b87fa0a2fee0167a0e75069810bfaf96caf54707fecfe94470de762b08a83"
+    },
+    {
+      "path": "evidencias/observacion_3/auditoria/matriz_hallazgos.csv",
+      "bytes": 1684,
+      "sha256": "1ffba7e72372997194d681a45454336891f8520f996a961aa0179b1fbcbb39aa"
+    },
+    {
+      "path": "evidencias/observacion_3/datos/diccionario_SIDI_DATA_002.csv",
+      "bytes": 6651,
+      "sha256": "b561569d21f593b514b69e3761c843035780258366304c5674b3de9d99712b0c"
+    },
+    {
+      "path": "evidencias/observacion_3/datos/ficha_tecnica_SIDI_DATA_002.md",
+      "bytes": 12280,
+      "sha256": "5c8f3bfd25762fced6f2004e0fe39301b6877160b30b7735f95cd43c7487bc19"
+    },
+    {
+      "path": "evidencias/observacion_3/protocolo/PROTOCOLO_EXPERIMENTAL_SIDI_RUN_003.md",
+      "bytes": 9312,
+      "sha256": "140477ff58aa4c67908fbd4a904549e89afd73af53161e986e12c3b39a563310"
+    },
+    {
+      "path": "evidencias/observacion_3/resultados/INFORME_RESULTADOS_PASO_5.md",
+      "bytes": 9575,
+      "sha256": "f2d4b37b744409b5f0f3a9d27791154b230f8bd1c33aa42b8e73c759d47871aa"
+    },
+    {
+      "path": "evidencias/observacion_3/resultados/tabla_01_comparacion_modelos_cv.csv",
+      "bytes": 598,
+      "sha256": "7969edc02403a0f00b5f68a1d32ba49c7575630c0ddcf35f9ff99c4ebc48ee7f"
+    },
+    {
+      "path": "evidencias/observacion_3/resultados/tabla_02_resultados_20_folds.csv",
+      "bytes": 2608,
+      "sha256": "69e42cd253875218f468903606ba9f7da7ce96b57f495b7ef42a301186b7c4b1"
+    },
+    {
+      "path": "evidencias/observacion_3/resultados/tabla_03_matriz_test.csv",
+      "bytes": 87,
+      "sha256": "858cc7a4d3272663baf9dff345b55818bf96b66b4b202924b1200fd4056f594c"
+    },
+    {
+      "path": "evidencias/observacion_3/resultados/tabla_04_comparacion_run002_run003.csv",
+      "bytes": 393,
+      "sha256": "5fa78e21b30abf3d6e8960a8e614f010019ebbe7249e775eea5716e9e7692033"
+    },
+    {
+      "path": "evidencias/observacion_3/robustez/INFORME_ROBUSTEZ_PASO_6.md",
+      "bytes": 7791,
+      "sha256": "88724196a46146546f0d09404d659cb4f5b79c6352f94523e9ec51a0a585dea2"
+    },
+    {
+      "path": "evidencias/observacion_3/robustez/PROTOCOLO_VALIDACION_EXTERNA_FUTURA.md",
+      "bytes": 6903,
+      "sha256": "efcc655cbb0f9987686489884b2956dddbb81238edad4669d9f29422436ee322"
+    },
+    {
+      "path": "evidencias/observacion_3/robustez/generate_and_evaluate_sidi_stress_001.py",
+      "bytes": 8158,
+      "sha256": "86c5e1842a376953db96e3227b094efdb37fb245517c3e9b43dfefa982639325"
+    },
+    {
+      "path": "evidencias/observacion_3/robustez/integrity_checks.json",
+      "bytes": 1690,
+      "sha256": "92596aa3de9b10ddea8f279d4341580eb0591c58379290537de0a8042addd841"
+    },
+    {
+      "path": "evidencias/observacion_3/robustez/protocolo_predefinido_SIDI_STRESS_001.json",
+      "bytes": 1966,
+      "sha256": "cf3937fa022be646a992598d85908694ce6ed115bdb95a45092ac8352b067a57"
+    },
+    {
+      "path": "evidencias/observacion_3/robustez/reproducibility_checks.json",
+      "bytes": 1058,
+      "sha256": "859c3773d721ca687a48bdf14409ba4bd98e4b3315bb92cfa732c4ecd328438f"
+    },
+    {
+      "path": "evidencias/observacion_3/robustez/scenario_metrics.csv",
+      "bytes": 919,
+      "sha256": "6275dc1183aaf09709236ffac453ef47461823f8cd45d18d43c8bde1a1847075"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/GUIA_REPRODUCIBILIDAD.md",
+      "bytes": 2647,
+      "sha256": "5d4c8e2cd9232d32cdca6e1e4d7a8e36a88378aef6c9dbf9d65a5ffd60ce5a2f"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/INFORME_CIERRE_PASO_4.md",
+      "bytes": 5406,
+      "sha256": "5e7c381949bd8f8be5c9bc31c589c6c4c0a72ce99c813108c8fa5a56e07d63d4"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/artifact_manifest.json",
+      "bytes": 863,
+      "sha256": "d45acad534493072ce27cb2b1cba10228fe6042bcd52d1fced145aa2d29fbc04"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/cv_folds.csv",
+      "bytes": 2605,
+      "sha256": "6b990197c3c98370acf5033d56b2b09698f15125ad763d0af1eff99da76a25ea"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/cv_resumen.csv",
+      "bytes": 442,
+      "sha256": "0c176b1cbde62397b484eb78a35c4fdfbe932c9d7d1772bccdc5e2e8e154ef15"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/environment.json",
+      "bytes": 483,
+      "sha256": "a6285ff3e7c6445666ddf49ce63c02b4ef8b0b72f3c12b55161fce570495dcfa"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/model_selection.json",
+      "bytes": 1368,
+      "sha256": "75d40935fadba8eb3363503d2839fd98a799fc94d2eb57d630380cdb066ee34e"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/partition_summary.json",
+      "bytes": 1376,
+      "sha256": "e4815be517355ff3b10916c8d9d3c65d03a66961b2d9bc812d6f2f1a62d186b1"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/requirements_freeze.txt",
+      "bytes": 10431,
+      "sha256": "503ddd5a292a3326ee08a2b458289d110d8324a5cbded14021a918fb2d0cd627"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/test_classification_report.json",
+      "bytes": 642,
+      "sha256": "6df00fcdd8c1336708faff8ec7d11e1e48145c4ae601b3fec1e710a935995d4c"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/test_confusion_matrix.csv",
+      "bytes": 73,
+      "sha256": "2514fac5f8de8a59863a1bc689127eb401deb08536238fe0c4fbea8925e1ada1"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/test_metrics.json",
+      "bytes": 442,
+      "sha256": "2ea524c5f7646275bf53dac323b0d28d6332f607f620830f1b08ed8d54e89431"
+    },
+    {
+      "path": "evidencias/observacion_3/run_003/verificacion_evidencias.json",
+      "bytes": 1321,
+      "sha256": "29baa420fcccb137cfbe58ecf145e7636bda0474eea0467cabb4aa4cf9df7f53"
+    },
+    {
+      "path": "protocolos/SIDI_DATA_002_manifest.json",
+      "bytes": 4497,
+      "sha256": "c41e9069b50547c85bd81ff524932a5f176b5f2f64546255d6f745afef409a7c"
+    },
+    {
+      "path": "protocolos/SIDI_RUN_003_config.json",
+      "bytes": 1687,
+      "sha256": "61a35ee9656c8dd030063a61c0bb4b8399660ad779dc9b7cee4b5a8ede6ac7a5"
+    },
+    {
+      "path": "requirements-experiment.in",
+      "bytes": 198,
+      "sha256": "b293d31cbfc16dbf7b55c7fa4d83da07d9f394e33d074e99b720765d6311b945"
+    },
+    {
+      "path": "src/experiments/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/experiments/sidi_run_003.py",
+      "bytes": 19422,
+      "sha256": "807b12d971eed85bfec1e0028ef6f0125de63a516944108c07c8dc5c8e61f6b2"
+    },
+    {
+      "path": "src/experiments/sidi_run_003_parallel.py",
+      "bytes": 22455,
+      "sha256": "3b1599cdb59c0e7027d074d207fb0b5426c1227463504facb798b29627851909"
+    },
+    {
+      "path": "tests/conftest.py",
+      "bytes": 99,
+      "sha256": "8d2e08dbf67dbfd91c1a8f40a7bcb0ff83ee573332b23991bdc8ae2b3ec2ed0e"
+    },
+    {
+      "path": "tests/test_equivalencia_soft_voting.py",
+      "bytes": 1227,
+      "sha256": "2684c50bb9a5f11860a30f59dae1e039fd6a4b6fabba95959f2328ff25b8af02"
+    },
+    {
+      "path": "tests/test_sidi_run_003.py",
+      "bytes": 2834,
+      "sha256": "177c8219c5ab203b696471c2b94dfa3a9def40f7eb5d83fa6cba8afdee1564d0"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "model_sha256": "663c5d8d925a08b1deb25d04a2d9222af469ec0313072478ee09a3449a1a7969",
+  "config_sha256": "cf3937fa022be646a992598d85908694ce6ed115bdb95a45092ac8352b067a57",
+  "scenarios": [
+    {
+      "scenario": "S0_alt_reference",
+      "data_sha256": "861079c35418228991a2a997fe1bb84148817164a8fdf0471cb95832928c011e",
+      "predictions_sha256": "a394c33057438b6b26eb3d343c042215fa83e118d1fbb13575f2085a1bb87609",
+      "n": 12000,
+      "positive_n": 360
+    },
+    {
+      "scenario": "S1_mild_irregularities",
+      "data_sha256": "1dd9d859ea5cfa8a729a20c80a9ac99a80a94d8496b1efe8d49fc90910fb72c4",
+      "predictions_sha256": "9bf1f3129044fb97e17386aa7ead0dcc807cd5972bb7f2299cf5523d255ad8f4",
+      "n": 12000,
+      "positive_n": 360
+    },
+    {
+      "scenario": "S2_profile_shift",
+      "data_sha256": "5f581d4d9a454c8fd50b06ee1e64682a84eea50626db4a02c77d0c1692e406c6",
+      "predictions_sha256": "d3dc8e3f712c21fa267c3a020f4ebb839e471801e3a99d71ed028b42148acfde",
+      "n": 12000,
+      "positive_n": 360
+    },
+    {
+      "scenario": "S3_benign_extremes",
+      "data_sha256": "ec08b00d2995f08ba15d1da873a32a26f48debf7cad2f13ce478a021e1493dba",
+      "predictions_sha256": "f38cc083beaf86f44e384b3e99c264916525fcb1dcb2fbb2c2f8724acdb1bf14",
+      "n": 12000,
+      "positive_n": 360
+    },
+    {
+      "scenario": "S4_high_prevalence",
+      "data_sha256": "dff7683e77bd89f7a187df989a8126146d0759842c2993d49e60b56438f853d3",
+      "predictions_sha256": "f16ea7510088b0527c3b3b3ab427e299fd7d17e9c7471c48fc3a08021a6d2ab3",
+      "n": 12000,
+      "positive_n": 1440
+    }
+  ],
+  "no_training_performed": true,
+  "prespecified_scenarios": 5,
+  "verified_predictions": 5
+}

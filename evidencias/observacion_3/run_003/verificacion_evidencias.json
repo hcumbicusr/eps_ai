@@ -1,0 +1,42 @@
+{
+  "protocol_id": "SIDI-RUN-003",
+  "dataset_id": "SIDI-DATA-002",
+  "git_commit_documentado": "d2cdc2dc120bbb9aef643ac9e6035f179170fc92",
+  "python_entorno": "3.13.5",
+  "checks": {
+    "artefactos_presentes": true,
+    "particion_80_20": true,
+    "train_test_no_solapados": true,
+    "cv_sin_test": true,
+    "cv_cinco_folds_sin_solapamiento": true,
+    "20_filas_cv": true,
+    "matrices_cv_15360": true,
+    "metricas_cv_finitas": true,
+    "seleccion_por_cv": true,
+    "test_19200": true,
+    "test_ids_identicos": true,
+    "umbral_0_5": true,
+    "test_metricas_recalculadas_con_csv_predicciones": true,
+    "matriz_test_coherente": true,
+    "hash_modelo": true,
+    "modelo_no_desplegado": true,
+    "input_22_predictoras": true,
+    "nombre_ganador_coherente": true
+  },
+  "pasaron": 18,
+  "total": 18,
+  "selected_model": "Modelo Hibrido (Soft Voting)",
+  "cv_rows": 20,
+  "sha256_scripts": {
+    "original_paso3": "807b12d971eed85bfec1e0028ef6f0125de63a516944108c07c8dc5c8e61f6b2",
+    "paralelo_paso4": "3b1599cdb59c0e7027d074d207fb0b5426c1227463504facb798b29627851909"
+  },
+  "recomputed_test": {
+    "F1": 0.7617360496014172,
+    "AP": 0.8215565327092436,
+    "Precision": 0.7692307692307693,
+    "Recall": 0.7543859649122807,
+    "Accuracy": 0.9859895833333333,
+    "ROC_AUC": 0.9630501643265437
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "model_path": "selected_pipeline.joblib",
+  "model_sha256": "663c5d8d925a08b1deb25d04a2d9222af469ec0313072478ee09a3449a1a7969",
+  "model_name": "Modelo Hibrido (Soft Voting)",
+  "input_columns_ordered": [
+    "mes_escalar",
+    "contexto_estacional",
+    "es_fin_de_semana",
+    "es_mes_festivo",
+    "clase_servicio",
+    "categoria_tarifaria",
+    "consumo_m3",
+    "dias_entre_lecturas",
+    "lectura_estimada_flag",
+    "clave_lectura_tipo",
+    "antiguedad_medidor_meses",
+    "mora_dias",
+    "tiene_deuda_activa",
+    "avg_consumo_6m",
+    "std_consumo_6m",
+    "var_pct_mes",
+    "ceros_ult12",
+    "temperatura_maxima",
+    "precipitacion_acumulada",
+    "sector_riesgo_0_1",
+    "cluster_eps_id",
+    "perfil_cluster_kmeans"
+  ],
+  "inference": "Utilizar predict_proba sobre DataFrame; incluye StandardScaler internamente",
+  "not_deployed": true
+}

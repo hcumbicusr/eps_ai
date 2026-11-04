@@ -1,0 +1,7 @@
+# Declaración de dependencias del experimento, NO lock del entorno de ejecución.
+# En el Paso 4 se genera requirements_freeze.txt exacto automáticamente.
+numpy
+pandas
+scikit-learn
+xgboost
+joblib

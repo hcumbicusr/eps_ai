@@ -1,0 +1,21 @@
+{
+  "experiment_id": "SIDI-STRESS-001",
+  "date": "2026-11-04",
+  "dataset_origin": "Generated entirely independently from SIDI-DATA-002; no training/holdout rows reused",
+  "source_model_run": "SIDI-RUN-003",
+  "frozen_model_sha256": "663c5d8d925a08b1deb25d04a2d9222af469ec0313072478ee09a3449a1a7969",
+  "experimental_scope": "Only synthetic stress/transportability scenarios; NOT external EPS validation",
+  "n_per_scenario": 12000,
+  "threshold": 0.5,
+  "metrics": ["F1", "AveragePrecision", "Precision", "Recall", "Accuracy", "ROC_AUC", "VN", "FP", "FN", "VP"],
+  "scenarios": [
+    {"id": "S0_alt_reference", "seed": 6111, "positive_share": 0.03, "severity": "moderate", "shift": "reference", "benign_extreme_rate": 0.00, "purpose": "Independent alternative synthetic reference"},
+    {"id": "S1_mild_irregularities", "seed": 6112, "positive_share": 0.03, "severity": "mild", "shift": "reference", "benign_extreme_rate": 0.00, "purpose": "Weak consumption deviations"},
+    {"id": "S2_profile_shift", "seed": 6113, "positive_share": 0.03, "severity": "moderate", "shift": "high_consumption", "benign_extreme_rate": 0.00, "purpose": "Covariate shift in average consumption and variability"},
+    {"id": "S3_benign_extremes", "seed": 6114, "positive_share": 0.03, "severity": "moderate", "shift": "reference", "benign_extreme_rate": 0.12, "purpose": "Unusual legitimate demand under normal label"},
+    {"id": "S4_high_prevalence", "seed": 6115, "positive_share": 0.12, "severity": "moderate", "shift": "reference", "benign_extreme_rate": 0.00, "purpose": "Positive class prevalence sensitivity"}
+  ],
+  "nonadaptive_rule": "No changes to model, features, label, threshold or scenario definitions after observing results; all predictions are on new synthetic cases",
+  "generator_version": "independent_scenario_generator_v1",
+  "methodology_note": "Scenarios are designer-defined counterfactual simulations, not representative samples of actual EPS customers"
+}

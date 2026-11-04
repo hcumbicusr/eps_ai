@@ -1,0 +1,13 @@
+﻿ID,Prioridad,Componente,Hallazgo sustentado,Corrección propuesta,Paso previsto
+H01,Crítica,run_001,clave_lectura_tipo determina label en 96000/96000,No usar como evidencia experimental principal,2 y 8
+H02,Alta,run_002/generador,Una lectura sintética por cliente; promedio 6m y KMeans no calculados de historiales,Precisar diccionario y limitaciones sintéticas,2
+H03,Alta,2_model_preprocessing.py,Scaler entrenado en el 80% antes de CV,Colocar escalado dentro de cada fold,3
+H04,Alta,3_model_training.py,Soft Voting elegido por nombre; XGB gana AP,Predefinir criterio de selección con CV,3
+H05,Alta,logs/resultados_folds.csv,"Matrices exactas solo por fold, test solo classification_report redondeado",Exportar matrices y métricas exactas de test,3-5
+H06,Alta,PostgreSQL / ingestion,CSV se reemplaza en BD sin manifest de checksum ni orden total estable,"Registrar origen, hash, snapshot, seed y commit","3-4,7"
+H07,Alta,logger_setup.py,Logs anidados y agregados por día; warnings silenciados,Log único por corrida y no suprimir avisos,3-4
+H08,Alta,evaluación externa,No hay datos EPS independientes evaluados,Protocolo externo y prueba sintética separadas,6
+H09,Media,5_model_consumer.py,es_mes_festivo fijo 0 y clave_lectura_tipo default 1,Alinear feature engineering en inferencia,"3,7"
+H10,Media,requirements.txt,Versiones especificadas como mínimos,"Bloquear versiones, documentar entorno",7
+H11,Media,config.py,Credenciales de ejemplo predeterminadas en código,Quitar defaults y rotar si están activas,7
+H12,Media,run_001,var_pct_mes no corresponde a fórmula actual (desvío máximo 6.41),Documentar diferencia; conservar antecedente separado,"2,8"

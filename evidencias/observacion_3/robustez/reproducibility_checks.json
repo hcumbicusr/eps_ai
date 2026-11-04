@@ -1,0 +1,47 @@
+[
+  {
+    "scenario": "S0_alt_reference",
+    "generator_reproduces_byte_exact_csv": true,
+    "rows": 12000,
+    "positive": 360,
+    "columns_27": true,
+    "numeric_finite": true,
+    "unique_ids": true
+  },
+  {
+    "scenario": "S1_mild_irregularities",
+    "generator_reproduces_byte_exact_csv": true,
+    "rows": 12000,
+    "positive": 360,
+    "columns_27": true,
+    "numeric_finite": true,
+    "unique_ids": true
+  },
+  {
+    "scenario": "S2_profile_shift",
+    "generator_reproduces_byte_exact_csv": true,
+    "rows": 12000,
+    "positive": 360,
+    "columns_27": true,
+    "numeric_finite": true,
+    "unique_ids": true
+  },
+  {
+    "scenario": "S3_benign_extremes",
+    "generator_reproduces_byte_exact_csv": true,
+    "rows": 12000,
+    "positive": 360,
+    "columns_27": true,
+    "numeric_finite": true,
+    "unique_ids": true
+  },
+  {
+    "scenario": "S4_high_prevalence",
+    "generator_reproduces_byte_exact_csv": true,
+    "rows": 12000,
+    "positive": 1440,
+    "columns_27": true,
+    "numeric_finite": true,
+    "unique_ids": true
+  }
+]

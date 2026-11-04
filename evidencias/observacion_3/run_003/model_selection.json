@@ -1,0 +1,43 @@
+{
+  "selected_model": "Modelo Hibrido (Soft Voting)",
+  "criterion": "Mayor F1 medio de 5 folds; desempate: mayor Average Precision media; último desempate: orden declarado de modelos",
+  "ranked_models": [
+    {
+      "Modelo": "Modelo Hibrido (Soft Voting)",
+      "F1_mean": 0.7817168059592298,
+      "F1_sd": 0.015190829938293113,
+      "AP_mean": 0.8261593071142347,
+      "AP_sd": 0.020825554698440843,
+      "Precision_mean": 0.7993435834993732,
+      "Recall_mean": 0.7655600982763254
+    },
+    {
+      "Modelo": "SVM (Kernel RBF)",
+      "F1_mean": 0.7487351116374095,
+      "F1_sd": 0.009145327958673285,
+      "AP_mean": 0.7816970216525037,
+      "AP_sd": 0.023416483590461064,
+      "Precision_mean": 0.8804358555091074,
+      "Recall_mean": 0.6516219432607778
+    },
+    {
+      "Modelo": "Random Forest",
+      "F1_mean": 0.6998207347031775,
+      "F1_sd": 0.01906187787136366,
+      "AP_mean": 0.8021526909936071,
+      "AP_sd": 0.02231187668520746,
+      "Precision_mean": 0.6305756159583275,
+      "Recall_mean": 0.787025413643518
+    },
+    {
+      "Modelo": "XGBoost",
+      "F1_mean": 0.6643001158842929,
+      "F1_sd": 0.01479598516412339,
+      "AP_mean": 0.8328627976963542,
+      "AP_sd": 0.019413805439433853,
+      "Precision_mean": 0.5582249055344397,
+      "Recall_mean": 0.821214825905025
+    }
+  ],
+  "test_used_for_selection": false
+}

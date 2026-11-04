@@ -1,0 +1,18 @@
+{
+  "model": "Modelo Hibrido (Soft Voting)",
+  "test_size": 19200,
+  "metrics": {
+    "F1": 0.7617360496014172,
+    "AP": 0.8215565327092436,
+    "Precision": 0.7692307692307693,
+    "Recall": 0.7543859649122807,
+    "Accuracy": 0.9859895833333333,
+    "ROC_AUC": 0.9630501643265437,
+    "VP": 430,
+    "VN": 18501,
+    "FP": 129,
+    "FN": 140
+  },
+  "positive_label": 1,
+  "note": "AP es average_precision_score, no área trapezoidal PR"
+}
