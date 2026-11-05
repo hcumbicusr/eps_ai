@@ -20,6 +20,11 @@ services:
       - eps_postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
     restart: always
     networks:
       - eps_network
@@ -51,6 +56,10 @@ services:
     volumes:
       - ./logs:/app/logs
       - ./data:/app/data
+    # Prevalece sobre DB_HOST=localhost usado por scripts ejecutados en el host.
+    environment:
+      DB_HOST: postgres-eps-db
+      DB_PORT: "5432"
     depends_on:
       - postgres-eps-db
     healthcheck:
@@ -92,6 +101,43 @@ services:
       - rabbitmq-eps-broker
     volumes:
       - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - eps_network
+ 
+  # Semilla PostgreSQL de propósito exclusivamente demostrativo.
+  # Utiliza el volumen de la base existente y NO altera tablas del motor de IA.
+  seed-sidi-demo:
+    image: postgres:16
+    environment:
+      PGHOST: postgres-eps-db
+      PGPORT: "5432"
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: ${POSTGRES_DB}
+    volumes:
+      - ./scripts/dashboard/seed_sidi_demo.sql:/seed/seed_sidi_demo.sql:ro
+    command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/seed/seed_sidi_demo.sql"]
+    depends_on:
+      postgres-eps-db:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - eps_network
+
+  # Angular 22: fuente separada en ../eps-front, proxy HTTP a api-eps-ia.
+  eps-front:
+    build:
+      context: ../eps-front
+      dockerfile: Dockerfile
+    container_name: eps_front
+    ports:
+      - "127.0.0.1:${FRONT_PORT:-8088}:80"
+    depends_on:
+      api-eps-ia:
+        condition: service_started
+      seed-sidi-demo:
+        condition: service_completed_successfully
     restart: unless-stopped
     networks:
       - eps_network

@@ -106,3 +106,7 @@ async def evaluar_lectura(lectura: LecturaMedidor):
 @app.get("/health")
 async def health_check():
     return {"status": "online", "timestamp": datetime.now()}
+
+# Dashboard: lectura demostrativa independiente del entrenamiento y /predict.
+from src.dashboard.router import router as dashboard_router
+app.include_router(dashboard_router)

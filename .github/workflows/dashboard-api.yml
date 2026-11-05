@@ -1,0 +1,41 @@
+name: SIDI Dashboard API · PostgreSQL
+on:
+  push:
+    branches: [training]
+    paths:
+      - 'src/dashboard/**'
+      - 'src/4_fastapi_service.py'
+      - 'scripts/dashboard/**'
+      - 'tests/test_dashboard_*'
+      - '.github/workflows/dashboard-api.yml'
+  workflow_dispatch:
+jobs:
+  dashboard-api:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: local_test_only
+          POSTGRES_DB: eps_db
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d eps_db"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_USER: postgres
+      DB_PASS: local_test_only
+      DB_NAME: eps_db
+      SIDI_TEST_DB_URL: postgresql+psycopg2://postgres:local_test_only@127.0.0.1:5432/eps_db
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install fastapi sqlalchemy psycopg2-binary python-dotenv httpx pytest
+      - run: python scripts/dashboard/seed_demo.py
+      - run: python scripts/dashboard/seed_demo.py
+      - run: python -m pytest -q tests/test_dashboard_routes.py tests/test_dashboard_postgres.py
