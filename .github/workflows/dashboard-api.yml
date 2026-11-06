@@ -4,9 +4,12 @@ on:
     branches: [training]
     paths:
       - 'src/dashboard/**'
+      - 'src/5_model_consumer.py'
       - 'src/4_fastapi_service.py'
       - 'scripts/dashboard/**'
       - 'tests/test_dashboard_*'
+      - 'docker-compose.yml'
+      - 'Dockerfile'
       - '.github/workflows/dashboard-api.yml'
   workflow_dispatch:
 jobs:
@@ -33,13 +36,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        with: { python-version: '3.11' }
       - run: python -m pip install fastapi sqlalchemy psycopg2-binary python-dotenv httpx pytest
       - run: python scripts/dashboard/seed_demo.py
       - run: python scripts/dashboard/seed_demo.py
-      - run: python -m pytest -q tests/test_dashboard_routes.py tests/test_dashboard_postgres.py
-      - name: Validar sintaxis y variables de Docker Compose
+      - name: Crear esquema de flujo
+        env: { PGPASSWORD: local_test_only }
+        run: psql -h 127.0.0.1 -U postgres -d eps_db -v ON_ERROR_STOP=1 -f scripts/dashboard/init_sidi_live.sql
+      - name: Cargar perfiles sintéticos del simulador sin truncar
+        run: python scripts/dashboard/seed_simulator_profiles.py
+      - name: Comprobar semilla de perfiles idempotente
+        run: python scripts/dashboard/seed_simulator_profiles.py
+      - run: python -m pytest -q tests/test_dashboard_routes.py tests/test_dashboard_postgres.py tests/test_dashboard_live_routes.py tests/test_dashboard_live_postgres.py
+      - name: Verificar compose
         run: |
           cp .env-example .env
           docker compose --env-file .env-example config --quiet

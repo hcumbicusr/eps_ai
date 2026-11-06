@@ -6,16 +6,14 @@ volumes:
   eps_postgres_data:
 
 services:
-  # BASE DE DATOS
   postgres-eps-db:
     image: postgres:16
     container_name: postgres_eps_db
     env_file: .env
     environment:
-      # Postgres usa estas variables específicas para inicializarse
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - eps_postgres_data:/var/lib/postgresql/data
     ports:
@@ -26,10 +24,8 @@ services:
       timeout: 5s
       retries: 15
     restart: always
-    networks:
-      - eps_network
+    networks: [eps_network]
 
-  # BROKER DE MENSAJERÍA
   rabbitmq-eps-broker:
     image: rabbitmq:3-management
     container_name: rabbitmq_eps_broker
@@ -37,76 +33,14 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    networks:
-      - eps_network
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks: [eps_network]
 
-  # SERVICIO API IA
-  api-eps-ia:
-    build: .
-    container_name: api_eps_ai
-    env_file: .env
-    ports:
-      - "${IA_PORT}:8000"
-    command: ["uvicorn", "src.4_fastapi_service:app", "--host", "0.0.0.0", "--port", "8000"]
-    volumes:
-      - ./logs:/app/logs
-      - ./data:/app/data
-    # Prevalece sobre DB_HOST=localhost usado por scripts ejecutados en el host.
-    environment:
-      DB_HOST: postgres-eps-db
-      DB_PORT: "5432"
-    depends_on:
-      - postgres-eps-db
-    healthcheck:
-      test: ["CMD", "python", "src/utils/check_health.py"]
-      interval: 30s
-      start_period: 20s
-    restart: unless-stopped
-    networks:
-      - eps_network
-
-  # TRABAJADOR DE IA (CONSUMIDOR)
-  consumer-eps-ia:
-    build: .
-    container_name: consumer_eps_ai
-    env_file: .env
-    command: ["python", "src/5_model_consumer.py"]
-    volumes:
-      - ./logs:/app/logs
-    depends_on:
-      rabbitmq-eps-broker:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - eps_network
-
-  # API INGESTA (NESTJS)
-  api-eps-ingesta:
-    build:
-      context: ../api-eps-ingesta
-      dockerfile: Dockerfile
-    container_name: api_eps_ingesta
-    env_file: .env
-    ports:
-      - "${INGESTA_PORT}:${INGESTA_PORT}"
-    environment:
-      # Construcción dinámica de la URL de Rabbit para NestJS
-      - RABBITMQ_URL=amqp://${RABBIT_USER}:${RABBIT_PASS}@${RABBIT_HOST}:${RABBIT_PORT}
-    depends_on:
-      - rabbitmq-eps-broker
-    volumes:
-      - ./logs:/app/logs
-    restart: unless-stopped
-    networks:
-      - eps_network
- 
-  # Semilla PostgreSQL de propósito exclusivamente demostrativo.
-  # Utiliza el volumen de la base existente y NO altera tablas del motor de IA.
+  # Registros ficticios precargados para comparar con el flujo de IA; no sobrescribe tablas.
   seed-sidi-demo:
     image: postgres:16
     environment:
@@ -119,13 +53,104 @@ services:
       - ./scripts/dashboard/seed_sidi_demo.sql:/seed/seed_sidi_demo.sql:ro
     command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/seed/seed_sidi_demo.sql"]
     depends_on:
-      postgres-eps-db:
-        condition: service_healthy
+      postgres-eps-db: { condition: service_healthy }
     restart: "no"
-    networks:
-      - eps_network
+    networks: [eps_network]
 
-  # Angular 22: fuente separada en ../eps-front, proxy HTTP a api-eps-ia.
+  # Tabla durable del flujo de RabbitMQ: todas las mediciones y resultados de la IA.
+  init-sidi-live:
+    image: postgres:16
+    environment:
+      PGHOST: postgres-eps-db
+      PGPORT: "5432"
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: ${POSTGRES_DB}
+    volumes:
+      - ./scripts/dashboard/init_sidi_live.sql:/seed/init_sidi_live.sql:ro
+    command: ["psql", "-v", "ON_ERROR_STOP=1", "-f", "/seed/init_sidi_live.sql"]
+    depends_on:
+      postgres-eps-db: { condition: service_healthy }
+    restart: "no"
+    networks: [eps_network]
+
+  # Registra los 100 perfiles del simulador sin TRUNCATE ni borrar existentes.
+  seed-sidi-perfiles:
+    build: .
+    image: eps_ai-sidi-backend:local
+    env_file: .env
+    environment:
+      DB_HOST: postgres-eps-db
+      DB_PORT: "5432"
+    volumes:
+      - ./data:/app/data:ro
+    command: ["python", "scripts/dashboard/seed_simulator_profiles.py"]
+    depends_on:
+      postgres-eps-db: { condition: service_healthy }
+    restart: "no"
+    networks: [eps_network]
+
+  api-eps-ia:
+    build: .
+    image: eps_ai-sidi-backend:local
+    container_name: api_eps_ai
+    env_file: .env
+    ports:
+      - "${IA_PORT}:8000"
+    command: ["uvicorn", "src.4_fastapi_service:app", "--host", "0.0.0.0", "--port", "8000"]
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    environment:
+      DB_HOST: postgres-eps-db
+      DB_PORT: "5432"
+    depends_on:
+      init-sidi-live: { condition: service_completed_successfully }
+      seed-sidi-demo: { condition: service_completed_successfully }
+    healthcheck:
+      test: ["CMD", "python", "src/utils/check_health.py"]
+      interval: 30s
+      start_period: 20s
+    restart: unless-stopped
+    networks: [eps_network]
+
+  consumer-eps-ia:
+    build: .
+    image: eps_ai-sidi-backend:local
+    container_name: consumer_eps_ai
+    env_file: .env
+    command: ["python", "src/5_model_consumer.py"]
+    environment:
+      DB_HOST: postgres-eps-db
+      DB_PORT: "5432"
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      rabbitmq-eps-broker: { condition: service_healthy }
+      postgres-eps-db: { condition: service_healthy }
+      init-sidi-live: { condition: service_completed_successfully }
+      seed-sidi-perfiles: { condition: service_completed_successfully }
+    restart: unless-stopped
+    networks: [eps_network]
+
+  api-eps-ingesta:
+    build:
+      context: ../api-eps-ingesta
+      dockerfile: Dockerfile
+    container_name: api_eps_ingesta
+    env_file: .env
+    ports:
+      - "${INGESTA_PORT}:${INGESTA_PORT}"
+    environment:
+      RABBITMQ_URL: amqp://${RABBIT_USER}:${RABBIT_PASS}@${RABBIT_HOST}:${RABBIT_PORT}
+    depends_on:
+      rabbitmq-eps-broker: { condition: service_healthy }
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks: [eps_network]
+
+  # Código Angular 22 independiente en ../eps-front; no existe dentro de eps_ai.
   eps-front:
     build:
       context: ../eps-front
@@ -134,10 +159,7 @@ services:
     ports:
       - "127.0.0.1:${FRONT_PORT:-8088}:80"
     depends_on:
-      api-eps-ia:
-        condition: service_started
-      seed-sidi-demo:
-        condition: service_completed_successfully
+      api-eps-ia: { condition: service_started }
+      seed-sidi-demo: { condition: service_completed_successfully }
     restart: unless-stopped
-    networks:
-      - eps_network
+    networks: [eps_network]

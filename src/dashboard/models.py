@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 
 class DashboardSummary(BaseModel):
-    origen: str = "postgresql:sidi_demo"
+    origen: str
     es_demo: bool = True
     actualizado_en: str
     mediciones_total: int = Field(ge=0)
@@ -12,6 +12,10 @@ class DashboardSummary(BaseModel):
     lecturas_estimadas: int = Field(ge=0)
     consumo_promedio_m3: float = Field(ge=0)
     tasa_alertas_pct: float = Field(ge=0)
+    evaluadas_total: int = Field(default=0, ge=0)
+    sin_perfil_total: int = Field(default=0, ge=0)
+    errores_total: int = Field(default=0, ge=0)
+    pendientes_total: int = Field(default=0, ge=0)
 
 
 class MonthlyPoint(BaseModel):
@@ -34,7 +38,7 @@ class SectorItem(BaseModel):
 
 
 class DashboardDetail(BaseModel):
-    origen: str = "postgresql:sidi_demo"
+    origen: str
     es_demo: bool = True
     serie_mensual: list[MonthlyPoint]
     tipologias: list[BreakdownItem]
@@ -42,7 +46,7 @@ class DashboardDetail(BaseModel):
 
 
 class AlertItem(BaseModel):
-    id: int
+    id: int | str
     fecha: str
     cliente: str
     sector: str
@@ -52,7 +56,7 @@ class AlertItem(BaseModel):
 
 
 class AlertPage(BaseModel):
-    origen: str = "postgresql:sidi_demo"
+    origen: str
     es_demo: bool = True
     total: int
     items: list[AlertItem]
