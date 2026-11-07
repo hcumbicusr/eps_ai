@@ -264,3 +264,14 @@ El generador del dataset sintético puede ejecutarse con `python -m src.utils.ge
 - `api-eps-ingesta` mantiene el historial de simulaciones en memoria; reiniciar NestJS borra esos estados HTTP, aunque los eventos ya persistidos permanecen en PostgreSQL.
 - Para producción faltan control de acceso, migraciones gestionadas, contratos de eventos versionados, colas de mensajes fallidos, observabilidad, control de retención y validación con datos EPS reales.
 - Los dashboards consultan datos de una fuente seleccionada, nunca suman las cifras de `sidi_demo` y `sidi_live`.
+
+---
+
+## 11. Acta de prueba funcional integrada — 6 de noviembre de 2026
+
+La prueba local documentada con **mediciones sintéticas** confirmó el procesamiento y la persistencia de **101 lecturas** (100 del simulador y una medición adicional). PostgreSQL registró **46 predicciones normales y 55 predicciones de clase irregular**, sin eventos sin perfil, pendientes ni errores en la instantánea revisada. La API FastAPI y ambos dashboards Angular 22 mostraron contadores concordantes. RabbitMQ indicó 0 mensajes listos, 0 sin confirmar y un consumidor activo en el momento de la captura.
+
+- **[Acta de prueba funcional integrada — SIDI-PF-001](docs/PRUEBA_INTEGRACION_SIDI.md)**: alcance, procedimiento, matriz de verificación, resultados, incidencias previas, limitaciones y relación con las observaciones de tesis.
+- **[Consultas SQL reproducibles](docs/CONSULTAS_PRUEBA_INTEGRACION_SIDI.sql)**: verificación de estados, clases, lotes y separación entre `sidi_demo` y `sidi_live`.
+
+Los PDF originales `operativo.pdf` (6 páginas) y `estrategico.pdf` (3 páginas), junto con capturas de SQL, API, RabbitMQ y Docker, fueron aportados por el equipo en la conversación del 6/11/2026; **no están añadidos como binarios en el repositorio**. Los conteos 101/55 son una instantánea, no una meta fija ni evidencia de validación con datos reales de una EPS.
